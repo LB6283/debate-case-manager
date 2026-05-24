@@ -21,6 +21,24 @@ def create_database():
     conn.commit()
     conn.close()
 
+    def case_table():
+        conn = sqlite3.connect("cases.db")
+        c = conn.cursor()
+        c.execute("""CREATE TABLE IF NOT EXISTS cases(
+        case_number INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        type INTEGER,
+        FOREIGN KEY (type) REFERENCES type(id)
+        )""")
+
+    def citations():
+        conn = sqlite3.connect("cases.db")
+        c = conn.cursor()
+        c.execute("CREATE TABLE IF NOT EXISTS citations")
+
+    def paragraphs():
+        pass
+
 
 # Make sure no duplicates are in the database
 def check_database():
