@@ -1,4 +1,6 @@
+#!/bin/python3
 # All UI stuff goes here, all database logic belongs in backend.py
+import sqlite3
 import backend
 import sys
 from PySide6.QtWidgets import (
@@ -13,6 +15,7 @@ from PySide6.QtWidgets import (
     QLabel,
     QLineEdit,
     QPushButton,
+    QComboBox,
 )
 
 
@@ -58,8 +61,23 @@ class DebateApp(QMainWindow):
         layout1 = QHBoxLayout()
 
         enter_name = QLineEdit()
+        enter_name.setPlaceholderText("Enter the name of your case")
         submit_btn = QPushButton("Add Case")
-        debate_type = QCheckBox()
+        debate_type = QComboBox()
+        debate_type.addItems(["Lincoln-Douglas", "Congress", "Public Forum"])
+
+        # Call backend.new_case() on the current value of enter_name and the use a conditional to determine which number should be in debate_type based on the check box
+        def new_case():
+            match debate_type.currentText():
+                case "Lincoln-Douglas":
+                    debate_value = 1
+                case "Congress":
+                    debate_value = 2
+                case "Public Forum":
+                    debate_value = 3
+            backend.new_case(enter_name.text(), debate_value)
+
+        submit_btn.clicked.connect(new_case)
 
         layout1.addWidget(enter_name)
         layout1.addWidget(submit_btn)
@@ -72,7 +90,7 @@ class DebateApp(QMainWindow):
             layout = QVBoxLayout()
             layout1 = QHBoxLayout()
 
-            enter_name = QLineEdit()
+            enter_name = QLineEdit("Enter the title of the case you want to remove")
 
 
 # Get rid of this code later, just for testing the UI, will move to main.py once app is complete

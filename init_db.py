@@ -39,6 +39,8 @@ def create_database():
     def paragraphs():
         pass
 
+    case_table()
+
 
 # Make sure no duplicates are in the database
 def check_database():
