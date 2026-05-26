@@ -9,6 +9,7 @@ from PySide6.QtWidgets import (
     QCheckBox,
     QHBoxLayout,
     QMainWindow,
+    QRadioButton,
     QTabWidget,
     QWidget,
     QVBoxLayout,
@@ -16,6 +17,7 @@ from PySide6.QtWidgets import (
     QLineEdit,
     QPushButton,
     QComboBox,
+    QMessageBox,
 )
 
 
@@ -68,14 +70,20 @@ class DebateApp(QMainWindow):
 
         # Call backend.new_case() on the current value of enter_name and the use a conditional to determine which number should be in debate_type based on the check box
         def new_case():
-            match debate_type.currentText():
-                case "Lincoln-Douglas":
-                    debate_value = 1
-                case "Congress":
-                    debate_value = 2
-                case "Public Forum":
-                    debate_value = 3
-            backend.new_case(enter_name.text(), debate_value)
+            try:
+                match debate_type.currentText():
+                    case "Lincoln-Douglas":
+                        debate_value = 1
+                    case "Congress":
+                        debate_value = 2
+                    case "Public Forum":
+                        debate_value = 3
+                backend.new_case(enter_name.text(), debate_value)
+                enter_name.clear()
+                QMessageBox.information(self, "Success!", "Case added successfully")
+            except KeyboardInterrupt as e:
+                print(e)  # Remove once app is complete
+                QMessageBox.critical(self, "Error", str(e))
 
         submit_btn.clicked.connect(new_case)
 
@@ -93,8 +101,8 @@ class DebateApp(QMainWindow):
             enter_name = QLineEdit("Enter the title of the case you want to remove")
 
 
-# Get rid of this code later, just for testing the UI, will move to main.py once app is complete
-app = QApplication()
-window = DebateApp()
-window.show()
-sys.exit(app.exec())
+if __name__ == "__main__":
+    app = QApplication()
+    window = DebateApp()
+    window.show()
+    sys.exit(app.exec())

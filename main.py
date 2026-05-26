@@ -1,11 +1,13 @@
-import init_db
+#!/bin/python3
+import sqlite3
+import backend
 import ui
 import sys
 from PySide6.QtWidgets import QApplication
 
 
 def main():
-    init_db.create_database()
+    backend.create_database()
     app = QApplication()
     window = ui.DebateApp()
     window.show()
